@@ -1,0 +1,48 @@
+{
+    "background": {
+        "page": "background.html"
+    },
+    "browser_action": {
+        "default_icon": "icons/icon48.png",
+        "default_title": "Download Song"
+    },
+    "content_security_policy": "script-src 'self' https://ssl.google-analytics.com; object-src 'self'",
+    "description": "Zing MP3 Downloader extension for Google Chrome",
+    "icons": {
+        "24": "icons/icon24.png",
+        "48": "icons/icon48.png",
+        "64": "icons/icon64.png",
+        "128": "icons/icon128.png"
+    },
+    "author": "Corncob",
+    "homepage_url": "http://daiyen.info",
+    "short_name": "Zing MP3 Downloader",
+    "name": "Zing MP3 Downloader",
+    "manifest_version": 2,
+    "optional_permissions": ["clipboardWrite"],
+    "permissions": [
+        "storage",
+        "contextMenus",
+        "http://mp3.zing.vn/*",
+        "http://*.mp3.zing.vn/*",
+        "downloads"
+    ],
+    "update_url": "https://clients2.google.com/service/update2/crx",
+    "version": "1.0",
+    "web_accessible_resources": [
+        "download_box.html",
+        "setting.html",
+        "controllers/core.js"
+    ],
+    "content_scripts": [{
+        "matches": ["http://mp3.zing.vn/*"],
+        "js": [
+            "libs/jquery-2.2.3.min.js",
+            "controllers/MusicHelper.js",
+            "controllers/injector.js"
+        ]
+    }],
+    "externally_connectable": {
+        "matches": ["http://mp3.zing.vn/*"]
+    }
+}
