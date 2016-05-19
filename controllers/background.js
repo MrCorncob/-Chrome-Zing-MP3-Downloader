@@ -15,6 +15,24 @@ function downloadZingMp3Song(songID, quality) {
     });
 }
 
+function downloadZingMp3Album(albumID, quality) {
+
+    $.ajax({
+        url: 'http://api.mp3.zing.vn/api/mobile/song/getsonginfo',
+        data: {
+            requestdata: '{"id":"\'' + songID + '\'"}'
+        },
+        dataType: 'json',
+        success: function(data) {
+            console.log(data);
+            var url = data.source[quality] || data.source["320"] || data.source["128"];
+            var fileName = getSlug(data.title + " - " + data.artist) + ".mp3";
+            sendToChromeDownloadQueue(url, fileName);
+        }
+    });
+}
+
+// Get ASCII slug from Vietnamese string
 function getSlug(str) {
     str = str.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a");
     str = str.replace(/À|Á|Ạ|Ả|Ã|Â|Ầ|Ấ|Ậ|Ẩ|Ẫ|Ă|Ằ|Ắ|Ặ|Ẳ|Ẵ/g, "A");
@@ -66,6 +84,15 @@ var receiveMessage = function(request, sender, callback) {
             quality = '320';
         }
         downloadZingMp3Song(songId, quality);
+    }
+    else if (request.name == 'DownloadAlbum') {
+        var quality = request.data.quality;
+        var albumID = request.data.id;
+        if (quality === 'lossless'){
+            alert('Lossless song download is not supported!');
+            quality = '320';
+        }
+        downloadZingMp3Album(albumID, quality);
     }
     // return true;
     console.log(request);
