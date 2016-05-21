@@ -57,6 +57,26 @@ var showDlBox = function(downloadButtonObject) {
     }
 }
 
+// Bind single song download button event handler
+var bindSingleSongDownloadBoxEvent = function() {
+    var currentUrl = $('meta[property="og:url"]').attr('content');
+    if (!currentUrl){
+        return;
+    }
+    else{
+        try{
+            var reg = /http:\/\/mp3\.zing\.vn\/link\/song\/(\w+)/;
+            corncob_currentChoosingSong = reg.exec(currentUrl)[1];
+            console.log('Song ID:', corncob_currentChoosingSong);
+        }
+        catch (err){
+            console.log('Error getting song ID');
+            return;
+        }
+    }
+    changeDownloadButtonClass();
+    bindDownloadBoxEvent();
+}
 
 // Send download song request to chrome extension
 function sendZingDownloadRequest(quality) {
@@ -86,18 +106,48 @@ $('html').click(function(event) {
 
 // Unbind all click events bound to download buttons and boxes
 function unbindAllButtonEvent() {
-    $('.fn-dlsong').unbind('click');
-    $('.fn-dlsong').children().unbind('click');
+    try{
+        $('.fn-dlsong').unbind('click');
+        $('.fn-dlsong').children().unbind('click');
 
-    $('.fn-boxsong').unbind('click');
-    $('.fn-boxsong').children().unbind('click');
+        $('.fn-boxsong').unbind('click');
+        $('.fn-boxsong').children().unbind('click');
+    }
+    catch (err){
+        console.log('Unbind .fn-boxsong failed');
+    }
+
+
+    //Unbind event on single song page
+    try{
+        $('ul.dl-service.fn-list').unbind('click');
+        $('ul.dl-service.fn-list').children().unbind('click');
+        $('ul.dl-service.fn-list').children().children().unbind('click');
+    }
+    catch (err){
+        console.log('Unbind ul.dl-service.fn-list failed');
+    }
 }
 
+function changeDownloadButtonClass(){
+    $('.fn-128').removeClass('ghost-button');
+    $('.fn-320').removeClass('ghost-button');
+    $('.fn-lossless').addClass('ghost-button');
+
+    var sFn320Parent = $('.fn-size-320').parent();
+    sFn320Parent.find('a').remove();
+    sFn320Parent.append(' miễn phí');
+
+    $('.fn-download-off').addClass('none');
+    $('.dl-service.fn-list').removeClass('none');
+    // $('.dl-service.fn-list').children().removeClass('none');
+    $('.dl-service.fn-list').find('.none').removeClass('none');
+}
 $(document).ready(function() {
     // download();
     console.log('Document ready');
     unbindAllButtonEvent();
     bindDownloadButtonEvent();
-
+    bindSingleSongDownloadBoxEvent();
 
 });

@@ -80,7 +80,7 @@ var receiveMessage = function(request, sender, callback) {
         var quality = request.data.quality;
         var songId = request.data.id;
         if (quality === 'lossless'){
-            alert('Lossless song download is not supported!');
+            // alert('Lossless song download is not supported!');
             quality = '320';
         }
         downloadZingMp3Song(songId, quality);
@@ -89,7 +89,7 @@ var receiveMessage = function(request, sender, callback) {
         var quality = request.data.quality;
         var albumID = request.data.id;
         if (quality === 'lossless'){
-            alert('Lossless song download is not supported!');
+            // alert('Lossless song download is not supported!');
             quality = '320';
         }
         downloadZingMp3Album(albumID, quality);
