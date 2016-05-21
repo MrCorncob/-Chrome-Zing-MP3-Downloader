@@ -9,7 +9,7 @@
     };
     $(extensionIdElement).css('display:none');
     $(extensionIdElement).attr('id', 'CorncobZingDownloaderExtension');
-    $(extensionIdElement).attr('extension-id', 'jbndjjdhphalahkmdhbkcfnnllaoklle');
+    $(extensionIdElement).attr('extension-id', extensionId);
     (document.head || document.documentElement).appendChild(extensionIdElement);
     (document.head || document.documentElement).appendChild(s);
 
